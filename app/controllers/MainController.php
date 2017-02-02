@@ -19,14 +19,7 @@ class MainController extends Controller {
         $this->view->render('index','Главная');
     }
     public function actionLogin($params = null){
-        $user = new User();
-        $user->firstname = 'Александр';
-        $user->lastname = 'Иванов';
-        $user->bdate = '08.10.1989';
-        $user->email = 'admin@reprap3d.ru';
-        $user->password = '123456';
-        //$user->update(8);
-        //$model = $user->getAll();
+        
         $this->view->render('login','Авторизация');
     }
     public function actionSigin($params = null){
