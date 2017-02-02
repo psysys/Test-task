@@ -45,19 +45,24 @@
           <ul class="nav navbar-nav">
             
             
-            
+        <?php if((\app\core\Session::isAuth())): ?>    
             <li class="dropdown">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Управление пользователями <span class="caret"></span></a>
               <ul class="dropdown-menu">
-                <li><a href="/main/userlist">Просмотр списка</a></li>
-                
+                    
+                        <li><a href="/main/userlist">Просмотр списка</a></li>
+                    
               </ul>
             </li>
+        <?php endif; ?>
           </ul>
           <ul class="nav navbar-nav navbar-right">
-            <li><a href="/main/login">Авторизация</a></li>
-            <li><a href="/main/sigin">Регистрация</a></li>
-            <li><a href="/admin">Админка</a></li>
+                <?php if(!(\app\core\Session::isAuth())): ?>
+                    <li><a href="/main/login">Авторизация</a></li>
+                    <li><a href="/main/sigin">Регистрация</a></li>
+                <?php else: ?>
+                    <li><a href="/main/logout">Выход</a></li>
+                <?php endif; ?>
           </ul>
         </div><!--/.nav-collapse -->
       </div>

@@ -2,6 +2,7 @@
 namespace app\core;
 
 //use app\controllers\MainController;
+use app\core\Session;
 
 class Route {
     private $controller = 'Main';
@@ -19,9 +20,10 @@ class Route {
     }
     public function Run()
     {
-        session_start();
+        Session::start();
+        
+        
         $uri = $this->getUri();
-        //echo __DIR__.'<br>';
         $routes = explode('/', $uri);
         
         //Определение контроллера
@@ -35,9 +37,8 @@ class Route {
             $controllerName = $this->controller.'Controller';
         }
         $name = mb_strtolower($controllerName);
-        //echo $controllerName.'<br>';
         $controllerFile = "../app/controllers/".$controllerName.".php";
-        //echo $controllerFile.'<br>';
+        
         //Определение действия
         $action = array_shift($routes);
         
@@ -46,14 +47,14 @@ class Route {
         if ($action != '')
             $action = 'action'.ucfirst ($action);
         else $action = 'action'.$this->action;
-        //echo $action.'<br>';
+        
         
         //Создание объекта контроллера
         if (is_file($controllerFile)){
             $controllerObject = new $controllerName($name);
             $controllerObject->$action($params);
         }
-        else
+        else //При не правильном маршруте кинет на главную
         {
             $host = 'http://'.$_SERVER['HTTP_HOST'].'/';
             header('HTTP/1.1 404 Not Found');

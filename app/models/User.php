@@ -60,6 +60,14 @@ class User {
         $model->bindParam(':id', $id);
         $model->execute();
     }
+    public function validate($email,$password){
+        $result = $this->db->query("SELECT count(*) FROM `users` where `email`='".$email."' and `password`='".$password."';");
+        $result = $result->fetchAll(\PDO::FETCH_ASSOC);
+        if($result[0]['count(*)'] == 1)
+            return TRUE;
+        else  
+            return FALSE;
+    }
     
     
     

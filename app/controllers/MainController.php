@@ -2,11 +2,7 @@
 use app\models\User;
 use app\core\Dbase;
 use app\core\Controller;
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+use app\core\Session;
 
 /**
  * Description of MainController
@@ -19,11 +15,40 @@ class MainController extends Controller {
         $this->view->render('index','Главная');
     }
     public function actionLogin($params = null){
+        if (isset($_POST['login'])&&isset($_POST['password']))
+        {
+            $login = $_POST['login'];
+            $pass = md5($_POST['password']);
+            $model = new User();
+            if($model->validate($login, $pass))
+            {
+                $_SESSION['auth'] = 1;
+                
+                
+            }
+        }
         
         $this->view->render('login','Авторизация');
     }
+    public function actionLogout(){
+        Session::destroy();
+        $this->view->render('logout','Главная');
+    }
+
     public function actionSigin($params = null){
-        $this->view->render('sigin','Регистрация');
+        $data = 'start';
+        if (isset($_POST['firstname'])&&isset($_POST['lastname'])&&isset($_POST['bdate'])&&isset($_POST['email'])&&isset($_POST['password']))
+        {
+            $user = new User();
+            $user->firstname = $_POST['firstname'];
+            $user->lastname = $_POST['lastname'];
+            $user->bdate = $_POST['bdate'];
+            $user->email = $_POST['email'];
+            $user->password = md5($_POST['password']);
+            $user->save();
+            $data = 'end';
+        }
+        $this->view->render('sigin','Регистрация',$data);
     }
     public function actionUserlist($params = null){
         $user = new User();
